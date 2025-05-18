@@ -61,12 +61,16 @@ def login():
 
 @app.route('/index')
 def index():
-   return render_template('index.html')
+   fruits=['apple','banana','cherry']
+   courses=['python','java','c++']
+   is_logged=True
 
-fruits=['apple','banana','cherry']
-@app.route('/fruits')
-def fruits_list():
-   return render_template('index.html', fruits=fruits)
+   result={
+      'maths':80,
+      'english':90,
+      'science':85
+   }
+   return render_template('index.html', fruits=fruits, courses=courses, is_logged=is_logged,result=result)
 
 
 if __name__ == '__main__':

@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Flask Document</title>
+    <script type = "text/javascript" src = "{{ url_for('static', filename = 'script.js') }}" ></script>
+
   </head>
   <body>
     <h1>DEMO FLASK APP</h1>
@@ -14,12 +16,39 @@
       illum exercitationem explicabo assumenda culpa.
     </p>
     
-    <p>{{fruits}}</p>
+    <h6>{{fruits}}</h6>
     <ol>
         {% for fruit in fruits %}
             <li>{{fruit}}</li>
         {% endfor %}
     </ol>
+
+
+{% if logged %}
+<h6>Courses</h6>
+<ul>
+    {% for course in courses %}
+        <li>{{course}}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>NO COURSE LOGGED</p>
+{% endif %}
+
+
+ <h6>Results</h6>
+ <table border="1">
+    {% for k,v in result.items() %}
+        <tr>
+            <th>{{k}}</th>
+            <td>{{v}}</td>
+        </tr>
+    {% endfor %}
+ </table>
+  
+ <br/>
+ <input type = "button" onclick = "sayHello()" value = "Say Hello" />
+
 
   </body>
 </html>
