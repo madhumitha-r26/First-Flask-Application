@@ -72,6 +72,19 @@ def index():
    }
    return render_template('index.html', fruits=fruits, courses=courses, is_logged=is_logged,result=result)
 
+#------------------------ form usage -----------------------------
+
+@app.route('/student')
+def student():
+   return render_template('students.html')
+
+@app.route('/marks',methods = ['POST', 'GET'])
+def marks():
+   if request.method == 'POST':
+      res = request.form
+      return render_template('marks.html',res=res)
+
+
 
 if __name__ == '__main__':
       app.run(debug=True)
