@@ -1,6 +1,7 @@
-from flask import Flask, redirect, url_for, request,render_template
+from flask import *
 
 app = Flask(__name__)
+app.secret_key="abcde12345"
 
 #------------------------url building-----------------------------
 
@@ -84,6 +85,42 @@ def marks():
       res = request.form
       return render_template('marks.html',res=res)
 
+# ---------------------cookies------------------------------
+
+@app.route('/cookie')
+def enter_cookie():
+   return render_template('cookieform.html')
+
+@app.route('/setcookie',methods=['POST','GET'])
+def setcookie():
+   if request.method == 'POST':
+        user = request.form['nm']
+   
+   resp = make_response(render_template('readcookie.html',username=user))
+   resp.set_cookie('userID', user)
+   
+   return resp
+
+@app.route('/getcookie')
+def getcookie():
+   name = request.cookies.get('userID')
+   return '<h1>welcome '+ name + '</h1>'
+
+# -----------------------------session-----------------------------------
+@app.route('/session')
+def session_page():
+   res=make_response("<h4>Session variable is set, <a href='/getsession'>GET VARIABLE</a></h4>")
+   session['response']='admin'
+   return res
+
+@app.route('/getsession')
+def get_session():
+   if 'response' in session:
+      s= session['response'] 
+      return render_template('getsession.html',name=s)
+
+
+# --------------------- redirect and errors --------------------------
 
 
 if __name__ == '__main__':
