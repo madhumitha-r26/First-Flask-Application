@@ -1,7 +1,20 @@
 from flask import *
+from flask_mail import *
 
 app = Flask(__name__)
 app.secret_key="abcde12345"
+
+
+
+app.config['MAIL_SERVER']='smtp.gmail.com'  
+app.config['MAIL_PORT']=465  
+app.config['MAIL_USERNAME'] = 'admin@gmail.com'  
+app.config['MAIL_PASSWORD'] = '******'  
+app.config['MAIL_USE_TLS'] = False  
+app.config['MAIL_USE_SSL'] = True  
+  
+
+mail = Mail(app)  
 
 #------------------------url building-----------------------------
 
@@ -120,8 +133,46 @@ def get_session():
       return render_template('getsession.html',name=s)
 
 
-# --------------------- redirect and errors --------------------------
+# --------------------- redirect, errors & flash --------------------------
+@app.route('/login2')
+def admin():
+   return render_template('login.html')
 
+@app.route('/login3',methods = ['POST', 'GET'])
+def login2():
+   if request.method == 'POST':
+      if request.form['username'] == 'admin' :
+         flash('This is a flash message')
+         return redirect(url_for('index'))
+      else:
+         abort(401)
+   else:
+      return redirect(url_for('admin'))
+ 
+@app.route('/success')
+def success():
+   return 'logged in successfully'
+
+
+#-------------------------- file upload -----------------------------
+@app.route('/upload')
+def upload():
+   return render_template('upload.html')
+	
+@app.route('/uploader', methods = ['GET', 'POST'])
+def upload_file():
+   if request.method == 'POST':  
+        f = request.files['file']  
+        f.save(f.filename)
+        return render_template("fileres.html", filename = f.filename)  
+
+
+#-------------------------------mail extention------------------------------------
+@app.route('/mailbox')  
+def mailme():  
+    msg = Message('subject', sender = 'admin@gmail.com', recipients=['username@gmail.com'])  
+    msg.body = 'hi, this is the mail sent by using the flask web application'  
+    return "Mail Sent, Please check the mail id"  
 
 if __name__ == '__main__':
       app.run(debug=True)
